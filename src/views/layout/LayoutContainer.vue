@@ -4,7 +4,7 @@ import avatar from '@/assets/default-avatar.png'
 import router from '@/router'
 import { ElNotification } from 'element-plus'
 import {
-  Management,
+  Aim,
   Promotion,
   UserFilled,
   SwitchButton,
@@ -44,7 +44,7 @@ const handLayoutCommand = (value) => {
         router
       >
         <el-menu-item index="/map/catmap">
-          <el-icon><Management /></el-icon>
+          <el-icon><Aim /></el-icon>
           <span>猫咪地图</span>
         </el-menu-item>
         <el-menu-item index="/cat/list">
@@ -85,7 +85,7 @@ const handLayoutCommand = (value) => {
           </span>
           <template #dropdown>
             <el-dropdown-menu>
-              <el-dropdown-item command="profile" :icon="User"
+              <el-dropdown-item command="manager" :icon="User"
                 >个人中心</el-dropdown-item
               >
               <el-dropdown-item command="logout" :icon="SwitchButton"
