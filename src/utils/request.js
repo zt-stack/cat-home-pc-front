@@ -3,7 +3,7 @@ import { useUserStore } from '@/stores'
 import router from '@/router'
 import { ElNotification } from 'element-plus'
 
-const baseURL = 'localhost:8080'
+const baseURL = 'http://localhost:8080'
 
 const instance = axios.create({
   // TODO 1. 基础地址，超时时间
@@ -30,14 +30,14 @@ instance.interceptors.response.use(
   (res) => {
     // TODO 3. 处理业务失败
     // TODO 4. 摘取核心响应数据
-    if (res.data.code === 0) {
+    if (res.data.code === 1) {
       // 请求成功
       return res
     }
     // 错误提示
     ElNotification({
       title: '警告',
-      message: res.data.message || '服务器异常',
+      message: res.data.msg || '服务器异常',
       type: 'warning'
     })
     return Promise.reject(res.data)
@@ -52,7 +52,7 @@ instance.interceptors.response.use(
     // 默认错误
     ElNotification({
       title: '警告',
-      message: err.data.message || '服务器异常',
+      message: err.data.msg || '服务器异常',
       type: 'warning'
     })
     return Promise.reject(err)
