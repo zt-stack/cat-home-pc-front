@@ -229,7 +229,7 @@ watch(
   background-color: #fff;
   //   background: linear-gradient(to bottom, #f5ecd8, white);
   .bg {
-    background: url('@/assets/login/R-C.jpg') no-repeat center / cover;
+    background: url('@/assets/R-C.jpg') no-repeat center / cover;
     border-radius: 0 20px 20px 0;
   }
   .form {

@@ -5,6 +5,7 @@ export const useUserStore = defineStore(
   'catHome-user',
   () => {
     const token = ref('')
+    const userInfo = ref()
 
     //赋值token
     const setUserToken = (value) => {
@@ -14,11 +15,17 @@ export const useUserStore = defineStore(
     const getUserToken = () => {
       return token.value
     }
+    // 删除token
+    const removeUserToken = () => {
+      token.value = ''
+    }
 
     return {
       token,
       setUserToken,
-      getUserToken
+      getUserToken,
+      removeUserToken,
+      userInfo
     }
   },
   {
