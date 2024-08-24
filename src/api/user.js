@@ -16,3 +16,12 @@ export const userRegisterService = ({ managerName, password, repassword }) => {
     repassword
   })
 }
+
+// 获取用户详情信息
+export const getUserDetailInfoService = (managerName) => {
+  return request.get('/man', {
+    params: {
+      managerName
+    }
+  })
+}

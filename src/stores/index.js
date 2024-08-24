@@ -9,3 +9,4 @@ export default pinia
 
 //导出其他模块
 export * from './modules/user'
+export * from './modules/cat'

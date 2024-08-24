@@ -3,6 +3,8 @@ import { useUserStore } from '@/stores'
 import avatar from '@/assets/default-avatar.png'
 import router from '@/router'
 import { ElNotification } from 'element-plus'
+// import { getUserDetailInfoService } from '@/api/user'
+// import { onMounted } from 'vue'
 import {
   Aim,
   Promotion,
@@ -13,6 +15,12 @@ import {
   User,
   MessageBox
 } from '@element-plus/icons-vue'
+
+// 进入页面获取用户信息
+// onMounted(async () => {
+//   const res = await getUserDetailInfoService(userStore.userInfo.managerName)
+//   userStore.setUserDetailInfo(res.data.data)
+// })
 
 const userStore = useUserStore()
 const handLayoutCommand = (value) => {
@@ -76,11 +84,11 @@ const handLayoutCommand = (value) => {
     <el-container>
       <el-header>
         <div>
-          Hi ！ <strong>{{ 小帅 }}</strong>
+          Hi ！ <strong>{{ userStore.userInfo[0].managerName || '' }}</strong>
         </div>
         <el-dropdown placement="bottom-end" @command="handLayoutCommand">
           <span class="el-dropdown__box">
-            <el-avatar :src="avatar" />
+            <el-avatar :src="userStore.userInfo[0].image || avatar" />
             <el-icon><CaretBottom /></el-icon>
           </span>
           <template #dropdown>

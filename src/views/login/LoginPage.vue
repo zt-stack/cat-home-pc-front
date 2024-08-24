@@ -3,7 +3,11 @@ import { ref, watch } from 'vue'
 import { User, Lock } from '@element-plus/icons-vue'
 // import { useUserStore } from '@/stores/index'
 import { useRouter } from 'vue-router'
-import { userLoginService, userRegisterService } from '@/api/user.js'
+import {
+  userLoginService,
+  userRegisterService,
+  getUserDetailInfoService
+} from '@/api/user.js'
 import { useUserStore } from '@/stores'
 import { ElNotification } from 'element-plus'
 
@@ -72,8 +76,13 @@ const login = async () => {
     type: 'success'
   })
 
-  //   存储token
+  //存储token
   userStore.setUserToken(res.data.data)
+  const gsg = await getUserDetailInfoService(formModel.value.username)
+  setTimeout(() => {
+    //存储个人信息
+    userStore.setUserDetailInfo(gsg.data.data)
+  }, 5000)
   router.push('/')
 }
 
