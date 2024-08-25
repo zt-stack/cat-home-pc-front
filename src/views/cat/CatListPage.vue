@@ -214,8 +214,9 @@ const handleCurrentChange = (page) => {
       :row-style="rowStyle"
       v-loading="loading"
       v-if="catStore.getCatList"
+      @selection-change="handleSelectionChange"
     >
-      <el-table-column prop="catName" label="名字" type="selection" />
+      <el-table-column prop="catName" label="名字" />
       <el-table-column prop="image" label="照片" class="common">
         <template #default="scope">
           <el-image
@@ -236,7 +237,7 @@ const handleCurrentChange = (page) => {
           />
           <el-image
             v-else
-            style="width: 30px; height: 30px"
+            style="width: 40px; height: 40px"
             class="common"
             src="https://aiwebstudy.oss-cn-beijing.aliyuncs.com/3653b1b8-c60b-4a6d-ace2-48822183b76b.png"
           />
