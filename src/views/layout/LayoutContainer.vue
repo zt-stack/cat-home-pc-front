@@ -65,7 +65,7 @@ const handLayoutCommand = (value) => {
         </el-menu-item>
         <el-menu-item index="/ad/adList">
           <el-icon><MessageBox /></el-icon>
-          <span>云养管理</span>
+          <span>广告管理</span>
         </el-menu-item>
         <el-sub-menu index="/user">
           <!-- 一级路由用tempalte -->

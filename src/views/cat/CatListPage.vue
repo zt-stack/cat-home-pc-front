@@ -119,11 +119,14 @@ const submitForm = async () => {
     return
   }
   await updateForm.value.validate()
-  console.log(catForm.value)
-  const res = await insertCatService(catForm.value)
+  await insertCatService(catForm.value)
   getCatListPage()
+  ElNotification({
+    title: '成功',
+    message: '编辑成功',
+    type: 'info'
+  })
   dialog.value = false
-  console.log(res)
 }
 const cancelForm = () => {
   dialog.value = false
@@ -214,7 +217,6 @@ const handleCurrentChange = (page) => {
       :row-style="rowStyle"
       v-loading="loading"
       v-if="catStore.getCatList"
-      @selection-change="handleSelectionChange"
     >
       <el-table-column prop="catName" label="名字" />
       <el-table-column prop="image" label="照片" class="common">

@@ -9,7 +9,7 @@ export const getCatInfoService = (params) => {
 
 // 根据id查询猫咪信息
 export const getCatByIdService = (id) => {
-  return request.get('/cat/' + id)
+  return request.get('/cats/' + id)
 }
 
 // 更新猫咪信息
