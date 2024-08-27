@@ -322,7 +322,9 @@ const arrayDelete = async () => {
               class="size"
               >提交</el-button
             >
-            <el-button size="large" class="size">取消</el-button>
+            <el-button size="large" class="size" @click="drawer = false"
+              >取消</el-button
+            >
           </el-form-item></el-form-item
         >
       </el-form>

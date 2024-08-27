@@ -25,3 +25,22 @@ export const getUserDetailInfoService = (managerName) => {
     }
   })
 }
+
+// 更新用户信息
+export const updateManagerService = ({
+  id,
+  managerName,
+  name,
+  password,
+  image,
+  gender
+}) => {
+  return request.put('/man', {
+    id,
+    managerName,
+    name,
+    password,
+    image,
+    gender
+  })
+}

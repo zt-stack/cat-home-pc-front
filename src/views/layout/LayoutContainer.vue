@@ -3,24 +3,24 @@ import { useUserStore } from '@/stores'
 import avatar from '@/assets/default-avatar.png'
 import router from '@/router'
 import { ElNotification } from 'element-plus'
-// import { getUserDetailInfoService } from '@/api/user'
-// import { onMounted } from 'vue'
+import { updateManagerService } from '@/api/user'
+import { onMounted } from 'vue'
 import {
   Aim,
   Promotion,
-  UserFilled,
   SwitchButton,
   CaretBottom,
   PieChart,
   User,
-  MessageBox
+  MessageBox,
+  Odometer,
+  Plus
 } from '@element-plus/icons-vue'
+import { ref } from 'vue'
 
-// 进入页面获取用户信息
-// onMounted(async () => {
-//   const res = await getUserDetailInfoService(userStore.userInfo.managerName)
-//   userStore.setUserDetailInfo(res.data.data)
-// })
+onMounted(() => {
+  userForm.value = userStore.userInfo[0]
+})
 
 const userStore = useUserStore()
 const handLayoutCommand = (value) => {
@@ -34,7 +34,44 @@ const handLayoutCommand = (value) => {
     })
     return
   }
-  router.push(`/user/${value}`)
+  dialogTableVisible.value = true
+}
+
+// 弹窗修改个人信息
+const dialogTableVisible = ref(false)
+const userForm = ref({
+  id: userStore.userInfo[0].id,
+  managerName: '',
+  name: '',
+  password: '',
+  image: '',
+  gender: ''
+})
+// 照片上传
+const imgUrl = ref()
+const token = ref({ Authorization: userStore.token })
+const handleAvatarSuccess = (res) => {
+  imgUrl.value = res.data
+  userForm.value.image = res.data
+}
+
+// 提交按钮
+const onSubmit = async () => {
+  try {
+    await updateManagerService(userForm.value)
+    dialogTableVisible.value = false
+    ElNotification({
+      title: '成功',
+      message: '修改成功',
+      type: 'success'
+    })
+  } catch (error) {
+    ElNotification({
+      title: '失败',
+      message: '修改失败',
+      type: 'warning'
+    })
+  }
 }
 </script>
 
@@ -51,34 +88,35 @@ const handLayoutCommand = (value) => {
         text-color="#fff"
         router
       >
-        <el-menu-item index="/map/catmap">
+        <el-menu-item index="/map/catmap" class="distance">
           <el-icon><Aim /></el-icon>
           <span>猫咪地图</span>
         </el-menu-item>
-        <el-menu-item index="/cat/list">
+        <el-menu-item index="/cat/list" class="distance">
           <el-icon><Promotion /></el-icon>
           <span>猫咪管理</span>
         </el-menu-item>
-        <el-menu-item index="/dynamic/trends">
-          <el-icon><PieChart /></el-icon>
-          <span>动态管理</span>
-        </el-menu-item>
-        <el-menu-item index="/ad/adList">
+        <el-sub-menu index="/dynamic" class="distance">
+          <!-- 一级路由用tempalte -->
+          <template #title>
+            <el-icon><PieChart /></el-icon>
+            <span>动态管理</span>
+          </template>
+          <!-- 二级路由则是用这个 -->
+          <el-menu-item index="/dynamic/trends">
+            <el-icon><Odometer /></el-icon>
+            <span>动态数据</span>
+          </el-menu-item>
+        </el-sub-menu>
+
+        <el-menu-item index="/ad/adList" class="distance">
           <el-icon><MessageBox /></el-icon>
           <span>广告管理</span>
         </el-menu-item>
-        <el-sub-menu index="/user">
-          <!-- 一级路由用tempalte -->
-          <template #title>
-            <el-icon><UserFilled /></el-icon>
-            <span>个人中心</span>
-          </template>
-          <!-- 二级路由则是用这个 -->
-          <el-menu-item index="/user/manager">
-            <el-icon><User /></el-icon>
-            <span>基本资料</span>
-          </el-menu-item>
-        </el-sub-menu>
+        <!-- <el-menu-item index="/user/manager">
+          <el-icon><UserFilled /></el-icon>
+          <span>个人中心</span>
+        </el-menu-item> -->
       </el-menu>
     </el-aside>
     <el-container>
@@ -94,7 +132,7 @@ const handLayoutCommand = (value) => {
           <template #dropdown>
             <el-dropdown-menu>
               <el-dropdown-item command="manager" :icon="User"
-                >个人中心</el-dropdown-item
+                >修改信息</el-dropdown-item
               >
               <el-dropdown-item command="logout" :icon="SwitchButton"
                 >退出登录</el-dropdown-item
@@ -110,6 +148,95 @@ const handLayoutCommand = (value) => {
       <el-footer>Copyright © 2024 喵家. All rights reserved</el-footer>
     </el-container>
   </el-container>
+  <!-- 弹窗 -->
+  <el-dialog
+    v-model="dialogTableVisible"
+    title="修改信息"
+    width="800"
+    style="border-radius: 20px"
+  >
+    <el-form
+      label-position="right"
+      label-width="auto"
+      style="margin-left: 80px"
+    >
+      <el-form-item label="照片" label-position="left" class="distance-form">
+        <el-upload
+          ref="upload"
+          class="avatar-uploader"
+          action="http://localhost:8080/upload"
+          name="image"
+          :headers="token"
+          :on-success="handleAvatarSuccess"
+          :show-file-list="false"
+          style="
+            border: 2px solid #f5f5ff;
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+          "
+        >
+          <img
+            v-if="userForm.image"
+            :src="userForm.image || imgUrl"
+            class="avatar"
+            style="width: 180px; height: 180px; border-radius: 50%"
+          />
+          <el-icon
+            v-else
+            class="avatar-uploader-icon"
+            style="width: 180px; height: 180px"
+            ><Plus
+          /></el-icon>
+        </el-upload>
+      </el-form-item>
+      <el-form-item label="用户名" label-position="left" class="distance-form">
+        <el-input
+          style="width: 400px"
+          size="large"
+          v-model="userForm.managerName"
+        ></el-input>
+      </el-form-item>
+      <el-form-item label="姓名" label-position="left" class="distance-form">
+        <el-input
+          v-model="userForm.name"
+          style="width: 400px"
+          size="large"
+        ></el-input>
+      </el-form-item>
+      <el-form-item label="新密码" label-position="left" class="distance-form">
+        <el-input
+          v-model="userForm.password"
+          style="width: 400px"
+          size="large"
+        ></el-input>
+      </el-form-item>
+      <el-form-item label="性别" label-position="left" class="distance-form">
+        <el-select style="width: 400px" size="large" v-model="userForm.gender">
+          <el-option label="男生" value="男生"></el-option>
+          <el-option label="女生" value="女生"></el-option>
+        </el-select>
+      </el-form-item>
+      <el-form-item
+        class="distance-form"
+        style="width: 100%; height: 100%; margin-left: 180px"
+      >
+        <el-button
+          type="primary"
+          @click="onSubmit"
+          class="size-button"
+          style="margin-right: 30px"
+          >提交</el-button
+        >
+        <el-button
+          size="large"
+          class="size-button"
+          @click="dialogTableVisible = false"
+          >取消</el-button
+        >
+      </el-form-item>
+    </el-form>
+  </el-dialog>
 </template>
 
 <style lang="scss" scoped>
@@ -153,5 +280,15 @@ const handLayoutCommand = (value) => {
     font-size: 14px;
     color: #666;
   }
+}
+.distance {
+  margin-top: 10px;
+}
+.distance-form {
+  margin-top: 30px;
+}
+.size-button {
+  width: 100px;
+  height: 50px;
 }
 </style>
