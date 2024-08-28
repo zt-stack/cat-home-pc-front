@@ -96,6 +96,12 @@ const onSubmit = async () => {
           <el-icon><Promotion /></el-icon>
           <span>猫咪管理</span>
         </el-menu-item>
+
+        <el-menu-item index="/user/manager" class="distance">
+          <el-icon><MessageBox /></el-icon>
+          <span>广告管理</span>
+        </el-menu-item>
+
         <el-sub-menu index="/dynamic" class="distance">
           <!-- 一级路由用tempalte -->
           <template #title>
@@ -108,15 +114,6 @@ const onSubmit = async () => {
             <span>动态数据</span>
           </el-menu-item>
         </el-sub-menu>
-
-        <el-menu-item index="/ad/adList" class="distance">
-          <el-icon><MessageBox /></el-icon>
-          <span>广告管理</span>
-        </el-menu-item>
-        <!-- <el-menu-item index="/user/manager">
-          <el-icon><UserFilled /></el-icon>
-          <span>个人中心</span>
-        </el-menu-item> -->
       </el-menu>
     </el-aside>
     <el-container>
