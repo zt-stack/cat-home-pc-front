@@ -146,6 +146,7 @@ const onSubmit = async () => {
         type: 'warning'
       })
     }
+    return
   }
   // 新增数据
   try {
@@ -167,13 +168,11 @@ const onSubmit = async () => {
 }
 
 // 多选按钮
-const array = ref([])
+const array = []
 const obj = ref([])
 const handleSelectionChange = (e) => {
-  // array.value.append(e.id)
-  // console.log(e)
   obj.value = e
-  console.log(array)
+  console.log(obj.value)
 }
 // 批量删除
 const arrayDelete = async () => {
@@ -181,8 +180,21 @@ const arrayDelete = async () => {
     array.value.push(obj.id)
     console.log(obj.id)
   })
-  await arrayAdService(array.value)
-  getAdListPage()
+  try {
+    await arrayAdService(array.value)
+    getAdListPage()
+    ElNotification({
+      title: '成功',
+      message: '删除成功',
+      type: 'success'
+    })
+  } catch {
+    ElNotification({
+      title: '警告',
+      message: '选择删除广告',
+      type: 'warning'
+    })
+  }
 }
 </script>
 <template>
@@ -219,7 +231,7 @@ const arrayDelete = async () => {
       <el-table
         :data="adStore.adList"
         style="width: 100%"
-        height="250"
+        height="530"
         v-loading="loading"
         @selection-change="handleSelectionChange"
         v-if="adStore.adList"

@@ -214,6 +214,7 @@ const handleCurrentChange = (page) => {
     <el-table
       :data="catStore.catList"
       style="width: 100%"
+      height="530"
       :row-style="rowStyle"
       v-loading="loading"
       v-if="catStore.getCatList"

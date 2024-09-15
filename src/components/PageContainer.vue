@@ -30,7 +30,7 @@ defineProps({
 <style scoped lang="scss">
 .page-container {
   width: 85%;
-  height: 85%;
+  height: 100%;
   position: fixed;
 }
 .header {

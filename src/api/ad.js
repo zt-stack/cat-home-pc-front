@@ -57,5 +57,6 @@ export const insertAdService = ({
 
 // 批量删除
 export const arrayAdService = (array) => {
-  return request.delete('/ads/' + array)
+  const ids = array.join(',')
+  return request.delete(`/ads?ids=${ids}`)
 }
