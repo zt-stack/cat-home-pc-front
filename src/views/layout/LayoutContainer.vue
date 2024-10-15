@@ -77,6 +77,7 @@ const onSubmit = async () => {
 
 <template>
   <el-container class="layout-container">
+    <taking-drawer></taking-drawer>
     <el-aside width="200px">
       <!-- router是开启路由，这样子可以点击跳转，在菜单中通过index跳转 -->
       <!-- default-active是默认显示路由的颜色样式 -->

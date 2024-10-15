@@ -345,5 +345,10 @@ onMounted(() => {
 .main-box {
   display: flex;
   flex-wrap: wrap;
+  justify-content: space-around;
+  div {
+    // box-shadow: 2px 2px 20px 2px #f5f5f5;
+    z-index: 1;
+  }
 }
 </style>
